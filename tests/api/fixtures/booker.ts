@@ -1,12 +1,12 @@
 import { test as base, expect } from '@playwright/test';
-import { BookingClient } from '../tests/api/clients/BookingClient';
-import { Booking, CreateBookingResponse } from '../tests/api/clients/types';
-import auth from '../test-data/api/restful-booker/auth.json';
-import bookings from '../test-data/api/restful-booker/bookings.json';
+import { BookingClient } from '../clients/BookingClient';
+import { Booking, CreateBookingResponse } from '../clients/types';
+import auth from '../data/restful-booker/auth.json';
+import bookings from '../data/restful-booker/bookings.json';
 
 type ApiFixtures = {
   bookingClient: BookingClient;
-  /** A valid admin token (credentials from test-data/api/restful-booker/auth.json). */
+  /** A valid admin token (credentials from tests/api/data/restful-booker/auth.json). */
   authToken: string;
   /** A booking created for the test and deleted afterwards (setup + teardown, so tests stay independent). */
   createdBooking: CreateBookingResponse;

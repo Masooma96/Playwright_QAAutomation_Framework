@@ -1,5 +1,5 @@
-import { test, expect } from '../../../fixtures/jsonplaceholder';
-import data from '../../../test-data/api/jsonplaceholder/data.json';
+import { test, expect } from '../../fixtures/jsonplaceholder';
+import data from '../../data/jsonplaceholder/data.json';
 
 const status = data.expectedStatus;
 

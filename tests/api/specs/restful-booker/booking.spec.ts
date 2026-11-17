@@ -1,7 +1,7 @@
-import { test, expect } from '../../../fixtures/booker';
-import bookings from '../../../test-data/api/restful-booker/bookings.json';
-import { Booking } from '../clients/types';
-import { validateSchema } from '../../../utils/schema';
+import { test, expect } from '../../fixtures/booker';
+import bookings from '../../data/restful-booker/bookings.json';
+import { Booking } from '../../clients/types';
+import { validateSchema } from '../../utils/schema';
 
 const status = bookings.expectedStatus;
 
@@ -12,19 +12,24 @@ test.describe('API - Create booking (POST) @api', () => {
       const response = await bookingClient.createBooking(c.payload as Booking);
       const elapsed = Date.now() - started;
 
-      // Status, performance, contract and data
+      // Status, performance and contract
       expect(response.status()).toBe(status.created);
       expect(elapsed).toBeLessThan(bookings.maxResponseTimeMs);
       const body = await response.json();
-      expect(validateSchema('createBooking', body)).toEqual([]);
-      expect(body.booking).toEqual(c.payload);
+      const bookingId: number | undefined = body?.bookingid;
 
-      // The new booking can be read back
-      const fetched = await bookingClient.getBooking(body.bookingid);
-      expect(fetched.status()).toBe(status.ok);
-      expect(await fetched.json()).toEqual(c.payload);
+      try {
+        expect(validateSchema('createBooking', body)).toEqual([]);
+        expect(body.booking).toEqual(c.payload);
 
-      await bookingClient.deleteBooking(body.bookingid, authToken); // clean up
+        // The new booking can be read back
+        const fetched = await bookingClient.getBooking(bookingId!);
+        expect(fetched.status()).toBe(status.ok);
+        expect(await fetched.json()).toEqual(c.payload);
+      } finally {
+        // Clean up even when an assertion above fails, so no test data is left behind
+        if (bookingId !== undefined) await bookingClient.deleteBooking(bookingId, authToken);
+      }
     });
   }
 });

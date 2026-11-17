@@ -1,5 +1,5 @@
-import { test, expect } from '../../../fixtures/jsonplaceholder';
-import data from '../../../test-data/api/jsonplaceholder/data.json';
+import { test, expect } from '../../fixtures/jsonplaceholder';
+import data from '../../data/jsonplaceholder/data.json';
 
 // JSONPlaceholder fakes write operations: it answers like a real API but does not store anything.
 // So these tests check the response contract (status code and body), not persistence.

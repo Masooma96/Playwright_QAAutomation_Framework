@@ -5,7 +5,7 @@ import { CartPage } from '../pages/CartPage';
 import { CheckoutPage } from '../pages/CheckoutPage';
 import { CheckoutOverviewPage } from '../pages/CheckoutOverviewPage';
 import { CheckoutCompletePage } from '../pages/CheckoutCompletePage';
-import users from '../test-data/users.json';
+import users from '../data/users.json';
 
 type Fixtures = {
   loginPage: LoginPage;
@@ -14,7 +14,7 @@ type Fixtures = {
   checkoutPage: CheckoutPage;
   overviewPage: CheckoutOverviewPage;
   completePage: CheckoutCompletePage;
-  /** Inventory page, already logged in as the standard user (credentials from test-data/users.json). */
+  /** Inventory page, already logged in as the standard user (credentials from tests/ui/data/users.json). */
   loggedInInventory: InventoryPage;
 };
 

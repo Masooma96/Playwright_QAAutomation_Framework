@@ -1,6 +1,6 @@
-import { test, expect } from '../../../fixtures/jsonplaceholder';
-import data from '../../../test-data/api/jsonplaceholder/data.json';
-import { validateSchema } from '../../../utils/schema';
+import { test, expect } from '../../fixtures/jsonplaceholder';
+import data from '../../data/jsonplaceholder/data.json';
+import { validateSchema } from '../../utils/schema';
 
 const status = data.expectedStatus;
 

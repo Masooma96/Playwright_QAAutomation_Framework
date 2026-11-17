@@ -18,12 +18,12 @@ It shows how I structure a maintainable test suite: page objects, API clients, d
 
 | Concept                                                    | Where to look                                                                                                                    |
 | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| Page Object Model (UI)                                     | [`pages/`](pages)                                                                                                                |
+| Page Object Model (UI)                                     | [`tests/ui/pages/`](tests/ui/pages)                                                                                              |
 | API client layer (the API version of POM)                  | [`tests/api/clients/`](tests/api/clients)                                                                                        |
-| Data-driven testing, with no hardcoded values in tests     | [`test-data/`](test-data)                                                                                                        |
-| Custom fixtures, setup and teardown                        | [`fixtures/`](fixtures)                                                                                                          |
-| Contract testing with JSON Schema                          | [`test-data/api/*/schemas`](test-data/api), [`utils/schema.ts`](utils/schema.ts)                                                 |
-| End-to-end API flow (create, read, update, delete, verify) | [`tests/api/restful-booker/booking-flow.spec.ts`](tests/api/restful-booker/booking-flow.spec.ts)                                 |
+| Data-driven testing, with no hardcoded values in tests     | `data/` folders in [`tests/ui`](tests/ui/data) and [`tests/api`](tests/api/data)                                                 |
+| Custom fixtures, setup and teardown                        | `fixtures/` in [`tests/ui`](tests/ui/fixtures) and [`tests/api`](tests/api/fixtures)                                             |
+| Contract testing with JSON Schema                          | [`tests/api/data/*/schemas`](tests/api/data), [`schema.ts`](tests/api/utils/schema.ts)                                           |
+| End-to-end API flow (create, read, update, delete, verify) | [`tests/api/specs/restful-booker/booking-flow.spec.ts`](tests/api/specs/restful-booker/booking-flow.spec.ts)                     |
 | Positive, negative and security tests                      | tagged `@negative`                                                                                                               |
 | Flaky-test controls                                        | [Flaky test strategy](#flaky-test-strategy)                                                                                      |
 | Code quality gate                                          | ESLint, Prettier and TypeScript, run first in CI                                                                                 |
@@ -50,22 +50,23 @@ It shows how I structure a maintainable test suite: page objects, API clients, d
 
 ```
 .
-├── pages/                    # UI page objects (Base, Login, Inventory, Cart, Checkout...)
-├── fixtures/                 # Fixtures: UI pages, API clients, logged-in session, auto-cleanup booking
-├── utils/                    # Helpers and JSON-schema validator
-├── test-data/
-│   ├── *.json                # UI data: login, products, sorting, cart, checkout, page routes
-│   └── api/
-│       ├── jsonplaceholder/  # API data and schemas
-│       └── restful-booker/   # API data and schemas
 ├── tests/
-│   ├── ui/                   # login, sorting, cart, checkout
-│   └── api/
-│       ├── clients/          # API clients (JsonPlaceholderClient, BookingClient), retry helper, types
-│       ├── jsonplaceholder/  # collections, single, filters, nested, CRUD
-│       └── restful-booker/   # auth, CRUD, negative, end-to-end flow
-├── .github/workflows/        # CI pipeline
-└── playwright.config.ts      # Projects: UI browsers and the two API suites
+│   ├── ui/                         # everything for the UI layer (SauceDemo)
+│   │   ├── specs/                  # login, sorting, cart, checkout
+│   │   ├── pages/                  # page objects (Base, Login, Inventory, Cart, Checkout...)
+│   │   ├── fixtures/               # page fixtures and the logged-in session
+│   │   ├── data/                   # JSON test data: users, login, products, sorting, cart, checkout, routes
+│   │   └── utils/                  # catalog and calculation helpers
+│   └── api/                        # everything for the API layer
+│       ├── specs/
+│       │   ├── jsonplaceholder/    # collections, single, filters, nested, CRUD
+│       │   └── restful-booker/     # auth, CRUD, negative, end-to-end flow
+│       ├── clients/                # API clients, retry helper, types
+│       ├── fixtures/               # client fixtures, auth token, auto-cleanup booking
+│       ├── data/                   # JSON test data and JSON schemas per service
+│       └── utils/                  # JSON-schema validator
+├── .github/workflows/              # CI pipeline
+└── playwright.config.ts            # projects: UI browsers and the two API suites
 ```
 
 ---
@@ -74,7 +75,7 @@ It shows how I structure a maintainable test suite: page objects, API clients, d
 
 ### UI: Page Object Model and data-driven tests
 
-Each page of the site is a class holding its locators and actions. Page URLs and titles come from [`test-data/pages.json`](test-data/pages.json), and every page can check itself with `expectLoaded()`. A test reads like a description of what a user does:
+Each page of the site is a class holding its locators and actions. Page URLs and titles come from [`tests/ui/data/pages.json`](tests/ui/data/pages.json), and every page can check itself with `expectLoaded()`. A test reads like a description of what a user does:
 
 ```ts
 await loginPage.open();
@@ -82,7 +83,7 @@ await loginPage.login(user.username, user.password);
 await inventoryPage.expectLoaded();
 ```
 
-Each row in a JSON file becomes its own test. To add a login case, add one row to [`test-data/login.json`](test-data/login.json) and write no code.
+Each row in a JSON file becomes its own test. To add a login case, add one row to [`tests/ui/data/login.json`](tests/ui/data/login.json) and write no code.
 
 ### API: client layer, schemas and data
 
@@ -133,7 +134,7 @@ A flaky test passes and fails without a code change. These tests depend on live 
 | API   | JSONPlaceholder  | 28    | 5 collections with schema checks, single resources, query filters, nested resources, 404s, POST / PUT / PATCH / DELETE |
 | API   | Restful-Booker   | 23    | Authentication, full CRUD, schema validation, filters, missing token (403), invalid payloads, end-to-end lifecycle     |
 
-The UI tests use one valid user, `standard_user`. The data is in [`test-data/login.json`](test-data/login.json).
+The UI tests use one valid user, `standard_user`. The data is in [`tests/ui/data/login.json`](tests/ui/data/login.json).
 
 ---
 
@@ -149,12 +150,13 @@ npx playwright install
 ## Running tests
 
 ```bash
-npm test                    # all 22 UI tests in Chrome (login, sorting, cart, checkout)
-npm run test:headed         # same tests with the browser visible
-npm run test:api            # JSONPlaceholder API tests
-npm run test:api:booker     # Restful-Booker API tests
-npm run test:api:all        # both API suites
-npm run test:ci             # what CI runs: all UI tests + all API tests
+npm test                    # everything: UI + both API suites
+npm run test:ui             # all 22 UI tests in Chrome (login, sorting, cart, checkout)
+npm run test:ui:headed      # UI tests with the browser visible
+npm run test:api            # both API suites
+npm run test:api:jsonplaceholder
+npm run test:api:booker
+npm run test:ci             # what CI runs (same as npm test)
 npm run test:smoke          # only @smoke tests
 npm run test:negative       # only @negative tests
 npm run test:cross-browser  # UI tests in Chromium, Firefox and WebKit

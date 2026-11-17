@@ -1,4 +1,4 @@
-import data from '../test-data/products.json';
+import data from '../data/products.json';
 
 export interface Product {
   key: string;
@@ -11,7 +11,7 @@ export const catalog: Product[] = data.items;
 
 export function getProduct(key: string): Product {
   const found = catalog.find((p) => p.key === key);
-  if (!found) throw new Error(`Unknown product key "${key}" - check test-data/products.json`);
+  if (!found) throw new Error(`Unknown product key "${key}" - check tests/ui/data/products.json`);
   return found;
 }
 

@@ -31,19 +31,19 @@ export default defineConfig({
   },
 
   projects: [
-    // ---- UI projects (tests/ui) ----
+    // ---- UI projects (tests/ui/specs) ----
     // Locally: installed Google Chrome. In CI: Playwright's bundled Chromium (faster, no Chrome install).
     {
       name: 'chrome',
-      testMatch: 'ui/**/*.spec.ts',
+      testMatch: 'ui/specs/**/*.spec.ts',
       use: { ...devices['Desktop Chrome'], channel: process.env.CI ? undefined : 'chrome' },
     },
-    { name: 'chromium', testMatch: 'ui/**/*.spec.ts', use: { ...devices['Desktop Chrome'] } },
-    { name: 'firefox', testMatch: 'ui/**/*.spec.ts', use: { ...devices['Desktop Firefox'] } },
-    { name: 'webkit', testMatch: 'ui/**/*.spec.ts', use: { ...devices['Desktop Safari'] } },
+    { name: 'chromium', testMatch: 'ui/specs/**/*.spec.ts', use: { ...devices['Desktop Chrome'] } },
+    { name: 'firefox', testMatch: 'ui/specs/**/*.spec.ts', use: { ...devices['Desktop Firefox'] } },
+    { name: 'webkit', testMatch: 'ui/specs/**/*.spec.ts', use: { ...devices['Desktop Safari'] } },
 
-    // ---- API projects (tests/api): no browser needed ----
-    { name: 'api', testMatch: 'api/jsonplaceholder/**/*.spec.ts', use: { baseURL: JSONPLACEHOLDER_URL } },
-    { name: 'api-booker', testMatch: 'api/restful-booker/**/*.spec.ts', use: { baseURL: BOOKER_URL } },
+    // ---- API projects (tests/api/specs): no browser needed ----
+    { name: 'api', testMatch: 'api/specs/jsonplaceholder/**/*.spec.ts', use: { baseURL: JSONPLACEHOLDER_URL } },
+    { name: 'api-booker', testMatch: 'api/specs/restful-booker/**/*.spec.ts', use: { baseURL: BOOKER_URL } },
   ],
 });

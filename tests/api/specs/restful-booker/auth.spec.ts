@@ -1,6 +1,6 @@
-import { test, expect } from '../../../fixtures/booker';
-import auth from '../../../test-data/api/restful-booker/auth.json';
-import bookings from '../../../test-data/api/restful-booker/bookings.json';
+import { test, expect } from '../../fixtures/booker';
+import auth from '../../data/restful-booker/auth.json';
+import bookings from '../../data/restful-booker/bookings.json';
 
 test.describe('API - Authentication @api', () => {
   test('valid credentials return a token @smoke', async ({ bookingClient }) => {

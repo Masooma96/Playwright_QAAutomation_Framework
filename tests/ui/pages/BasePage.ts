@@ -1,10 +1,10 @@
 import { Page, Locator, expect } from '@playwright/test';
-import pages from '../test-data/pages.json';
+import pages from '../data/pages.json';
 import { escapeRegExp } from '../utils/helpers';
 
 export type PageKey = keyof typeof pages;
 
-/** Shared behaviour for every page: URL and title come from test-data/pages.json. */
+/** Shared behaviour for every page: URL and title come from tests/ui/data/pages.json. */
 export abstract class BasePage {
   readonly title: Locator;
 

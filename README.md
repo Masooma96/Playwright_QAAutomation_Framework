@@ -10,7 +10,7 @@ A test automation framework built with **Playwright** and **TypeScript**. It cov
 
 It shows how I structure a maintainable test suite: page objects, API clients, data-driven tests, fixtures, contract testing, flaky-test controls and a CI pipeline.
 
-**[See the latest pipeline runs](https://github.com/Masooma96/Playwright_QAAutomation_Framework/actions)**. The HTML report is attached to each run as an artifact.
+**[See the latest pipeline runs](https://github.com/Masooma96/Playwright_QAAutomation_Framework/actions)**. The HTML report is attached to each run as an artifact. Latest API results: [`reports/api/API-TEST-REPORT.md`](reports/api/API-TEST-REPORT.md).
 
 ---
 

@@ -1,6 +1,6 @@
 # QA Automation Framework: UI + API
 
-![QA Automation Pipeline](https://github.com/Masooma96/Masooma-Login-/actions/workflows/playwright.yml/badge.svg)
+![QA Automation Pipeline](https://github.com/Masooma96/Playwright_QAAutomation_Framework/actions/workflows/playwright.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 A test automation framework built with **Playwright** and **TypeScript**. It covers two layers of a product:
@@ -10,7 +10,7 @@ A test automation framework built with **Playwright** and **TypeScript**. It cov
 
 It shows how I structure a maintainable test suite: page objects, API clients, data-driven tests, fixtures, contract testing, flaky-test controls and a CI pipeline.
 
-**[See the latest pipeline runs](https://github.com/Masooma96/Masooma-Login-/actions)**. The HTML report is attached to each run as an artifact.
+**[See the latest pipeline runs](https://github.com/Masooma96/Playwright_QAAutomation_Framework/actions)**. The HTML report is attached to each run as an artifact.
 
 ---
 
@@ -141,8 +141,8 @@ The UI tests use one valid user, `standard_user`. The data is in [`tests/ui/data
 ## Getting started
 
 ```bash
-git clone https://github.com/Masooma96/Masooma-Login-.git
-cd Masooma-Login-
+git clone https://github.com/Masooma96/Playwright_QAAutomation_Framework.git
+cd Playwright_QAAutomation_Framework
 npm install
 npx playwright install
 ```
